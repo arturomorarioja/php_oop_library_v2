@@ -29,6 +29,7 @@ Class Book extends LibraryItem
         if ($property === 'isbn') {
             return $this->isbn;
         }
+        return null;
     }
 
     public function __set(string $property, mixed $value)
