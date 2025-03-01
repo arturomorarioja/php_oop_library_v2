@@ -29,6 +29,7 @@ Class DVD extends LibraryItem
         if ($property === 'duration') {
             return $this->duration;
         }
+        return null;
     }
 
     public function __set(string $property, mixed $value)

@@ -29,6 +29,7 @@ Class Magazine extends LibraryItem
         if ($property === 'issueNumber') {
             return $this->issueNumber;
         }
+        return null;
     }
 
     public function __set(string $property, mixed $value)

@@ -30,6 +30,7 @@ Class LibraryItem
         if ($property === 'isBorrowed') {
             return $this->isBorrowed;
         }
+        return null;
     }
 
     public function __set(string $property, mixed $value)
