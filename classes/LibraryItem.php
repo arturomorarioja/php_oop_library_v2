@@ -1,11 +1,10 @@
 <?php
 
-Class LibraryItem
+abstract class LibraryItem
 {
     public string $title;
     public string $author;
     private int $publicationYear;
-    private bool $isBorrowed = false;
 
     public function __construct(
         string $title,
@@ -27,20 +26,7 @@ Class LibraryItem
         if ($property === 'publicationYear') {
             return $this->publicationYear;
         }
-        if ($property === 'isBorrowed') {
-            return $this->isBorrowed;
-        }
         return null;
-    }
-
-    public function __set(string $property, mixed $value)
-    {
-        if ($property === 'publicationYear' && !$this->validateYear($value)) {
-            throw new Exception('Invalid publication year.');
-        }
-        if ($property === 'isBorrowed') {
-            $this->isBorrowed = (bool) $value;
-        }
     }
 
     protected function validateYear(int $year): bool
@@ -48,22 +34,5 @@ Class LibraryItem
         return $year > 0 && $year <= date('Y');
     }
 
-    public function borrow(): void
-    {
-        if ($this->isBorrowed) {
-            throw new Exception("Item '{$this->title}' is already borrowed.");
-        }
-        $this->isBorrowed = true;
-    }
-
-    public function returnItem(): void
-    {
-        $this->isBorrowed = false;
-    }
-
-    public function getDetails(): string
-    {
-        return "<em>{$this->title}</em> by {$this->author} ({$this->publicationYear})" .
-            ($this->isBorrowed ? ' - Currently Borrowed' : ' - Available');
-    }
+    abstract public function getDetails(): string;
 }

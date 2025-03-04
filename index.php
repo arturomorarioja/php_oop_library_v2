@@ -17,19 +17,13 @@ try {
     $library->addItem($dvd);
 
     echo '<strong>Library Items:</strong><br>';
-    echo $library->getItems();
+    $library->listItems();
 
-    echo '<br>Borrowing \'The Great Gatsby\'...<br><br>';
-    $book->borrow();
+    echo '<br>Borrowing <em>The Great Gatsby</em>...<br><br>';
+    $book->borrowItem();
 
     echo '<strong>Updated Library Items:</strong><br>';
-    echo $library->getItems();
-
-    echo '<br>Returning \'The Great Gatsby\'...<br><br>';
-    $book->returnItem();
-
-    echo '<strong>Final Library State:</strong><br>';
-    echo $library->getItems();
+    $library->listItems();
 } catch (Exception $e) {
     echo 'Error: ' . $e->getMessage();
 }

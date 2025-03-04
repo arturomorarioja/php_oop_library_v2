@@ -1,6 +1,6 @@
 <?php
 
-Class Library
+class Library
 {
     private array $items = [];
 
@@ -9,12 +9,10 @@ Class Library
         $this->items[] = $item;
     }
 
-    public function getItems(): string
+    public function listItems(): void
     {
-        $items = '';
         foreach ($this->items as $item) {
-            $items .= $item->getDetails() . '<br>';
+            echo $item->getDetails() . '<br>';
         }
-        return $items;
     }
 }

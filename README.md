@@ -1,5 +1,5 @@
-# PHP OOP Library v2
-Basic OOP PHP example.
+# PHP OOP Library v3
+Basic OOP PHP example, including concepts like abstract classes and interfaces.
 
 ## Tools
 PHP8

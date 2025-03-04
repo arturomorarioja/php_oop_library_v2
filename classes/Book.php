@@ -1,11 +1,13 @@
 <?php
 
 require_once 'LibraryItem.php';
+require_once 'Borrowable.php';
 
-Class Book extends LibraryItem
+class Book extends LibraryItem implements Borrowable
 {
     private string $isbn;
     public int $pages;
+    private bool $isBorrowed = false;
 
     public function __construct(
         string $title,
@@ -16,37 +18,26 @@ Class Book extends LibraryItem
     )
     {
         parent::__construct($title, $author, $publicationYear);
-        if ($this->validateIsbn($isbn)) {
-            $this->isbn = $isbn;
-        } else {
-            throw new Exception('Invalid ISBN format.');
-        }
+        $this->isbn = $isbn;
         $this->pages = $pages;
     }
 
-    public function __get(string $property): mixed
+    public function borrowItem(): void
     {
-        if ($property === 'isbn') {
-            return $this->isbn;
+        if ($this->isBorrowed) {
+            throw new Exception("Book '{$this->title}' is already borrowed.");
         }
-        return null;
+        $this->isBorrowed = true;
     }
 
-    public function __set(string $property, mixed $value)
+    public function returnItem(): void
     {
-        if ($property === 'isbn' && !$this->validateIsbn($value)) {
-            throw new Exception('Invalid ISBN format.');
-        }
-        $this->$property = $value;
-    }
-
-    private function validateIsbn(string $isbn): bool
-    {
-        return preg_match('/^\d{13}$/', $isbn);
+        $this->isBorrowed = false;
     }
 
     public function getDetails(): string
     {
-        return 'Book: ' . parent::getDetails() . " - ISBN: {$this->isbn}";
+        return "Book: {$this->title} by {$this->author} ({$this->publicationYear}) - ISBN: {$this->isbn}" . 
+            ($this->isBorrowed ? ' [Borrowed]' : ' [Available]');
     }
 }

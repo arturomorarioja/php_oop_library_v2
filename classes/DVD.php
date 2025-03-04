@@ -1,11 +1,13 @@
 <?php
 
 require_once 'LibraryItem.php';
+require_once 'Borrowable.php';
 
-Class DVD extends LibraryItem
+class DVD extends LibraryItem implements Borrowable
 {
     private int $duration;
     public string $format;
+    private bool $isBorrowed = false;
 
     public function __construct(
         string $title,
@@ -16,37 +18,26 @@ Class DVD extends LibraryItem
     )
     {
         parent::__construct($title, $author, $publicationYear);
-        if ($this->validateDuration($duration)) {
-            $this->duration = $duration;
-        } else {
-            throw new Exception('Invalid duration.');
-        }
+        $this->duration = $duration;
         $this->format = $format;
     }
 
-    public function __get(string $property): mixed
+    public function borrowItem(): void
     {
-        if ($property === 'duration') {
-            return $this->duration;
+        if ($this->isBorrowed) {
+            throw new Exception("DVD '{$this->title}' is already borrowed.");
         }
-        return null;
+        $this->isBorrowed = true;
     }
 
-    public function __set(string $property, mixed $value)
+    public function returnItem(): void
     {
-        if ($property === 'duration' && !$this->validateDuration($value)) {
-            throw new Exception('Invalid duration.');
-        }
-        $this->$property = $value;
-    }
-
-    private function validateDuration(int $duration): bool
-    {
-        return $duration > 0;
+        $this->isBorrowed = false;
     }
 
     public function getDetails(): string
     {
-        return 'DVD: ' . parent::getDetails() . " - Duration: {$this->duration} mins, Format: {$this->format}";
+        return "DVD: {$this->title} by {$this->author} ({$this->publicationYear}) - {$this->duration} mins, Format: {$this->format}" . 
+            ($this->isBorrowed ? ' [Borrowed]' : ' [Available]');
     }
 }
